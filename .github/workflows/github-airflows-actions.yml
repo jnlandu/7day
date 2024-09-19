@@ -1,7 +1,4 @@
 name: Echo Temperature from Airflow
-# description: 'A workflow to echo temperature data passed from Airflow'
-run-name: Echo Temperature from Airflow
-# Removed the incorrect 'runs' section
 
 # Enables manual triggering of the workflow with inputs
 on:
@@ -11,22 +8,21 @@ on:
         description: 'Temperature data from Airflow'
         required: true
         default: '25' # Default temperature
-      humidity:
-        description: 'Humidity data from Airflow'
-        required: true
-        default: '50' # Default humidity
-      pressure:
-        description: 'Pressure data from Airflow'
-        required: true
-        default: '1013' # Default pressure
 
 jobs:
-  echo_parameters:
+  echo_temperature:
     runs-on: ubuntu-latest
+    
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+          
+      - name: Use GitHub Token to perform write operations
+        run: |
+          # Example usage of the token
+          echo "Using the token to perform write operations..."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_WRITE_TOKEN }}
+          
       - name: Echo the temperature
         run: echo "The temperature passed from Airflow is ${{ github.event.inputs.temperature }}°C"
-      - name: Echo the humidity
-        run: echo "The humidity passed from Airflow is ${{ github.event.inputs.humidity }}%"
-      - name: Echo the pressure
-        run: echo "The pressure passed from Airflow is ${{ github.event.inputs.pressure }} hPa"
